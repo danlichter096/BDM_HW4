@@ -8,10 +8,6 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DateType, IntegerType, MapType, StringType
 
 
-spark = SparkSession(sc)
-
-
-
 def expandVisits(date_range_start, visits_by_day):
     '''
     This function needs to return a Python's dict{datetime:int} where:
@@ -28,7 +24,7 @@ def expandVisits(date_range_start, visits_by_day):
     return visits
 
 def importData(spark):
-  weeklydf = spark.read.csv(['part-00000','part-00001'], header = True)\
+  weeklydf = spark.read.csv('hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*', header = True)\
                 .select('safegraph_place_id', 'date_range_start', 'visits_by_day')
   udfExpand = F.udf(expandVisits, MapType(DateType(), IntegerType()))
   datedf = weeklydf.select('safegraph_place_id',
@@ -36,7 +32,7 @@ def importData(spark):
                 .filter(F.col("date") >= datetime.date(2019,1,1))
   NAICS = set(['452210', '452311', '445120', '722410', '722511', '722513', '446110', '446191','311811', '722515', 
              '445210','445220','445230','445291','445292','445299','445110'])
-  coredf = spark.read.csv('core-places-nyc.csv', header = True, escape = '"')\
+  coredf = spark.read.csv('hdfs:///data/share/bdm/core-places-nyc.csv', header = True, escape = '"')\
           .select('safegraph_place_id','naics_code')\
           .where(F.col('naics_code').isin(NAICS)) 
   joindf = coredf.join(datedf, 'safegraph_place_id')\
@@ -65,8 +61,7 @@ def main(sc):
   dfs = splitData(joindf)
   index = 0
   fileNames = ['big_box_grocers','convenience_stores','drinking_places','full_service_restaurants','limited_service_restaurants',
-                'pharmacies_and_drug_stores','snack_and_bakeries','specialty_food_stores',
-               'supermarkets_except_convenience_stores']
+                'pharmacies_and_drug_stores','snack_and_bakeries','specialty_food_stores','supermarkets_except_convenience_stores']
   for x in range(len(dfs)):
     dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
         .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
@@ -85,7 +80,6 @@ if __name__ == "__main__":
   sc = pyspark.SparkContext()
   main(sc)
 
-  #for i, arg in enumerate(sys.argv):
     
                 
 
