@@ -70,9 +70,7 @@ def main(sc):
         .withColumn('high', F.col('median')+F.col('std'))\
         .drop('array1')\
         .drop('std')\
-        .rdd.saveAs
-
-    dfs[x].write.option("header",True).csv(f"/{sys.argv[1]}/{fileNames[index]}")
+        .rdd.saveAsTextFile(f"/{sys.argv[1]}/{fileNames[index]}")
     index+=1
 
 
