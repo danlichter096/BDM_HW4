@@ -57,17 +57,19 @@ def importData(spark):
 
 def main(sc):
   spark = SparkSession(sc)
+  index = 0
   NAICS = set(['452210', '452311', '445120', '722410', '722511', '722513', '446110', '446191','311811', '722515', 
              '445210','445220','445230','445291','445292','445299','445110'])
+  fileNames = ['big_box_grocers','convenience_stores','drinking_places','full_service_restaurants','limited_service_restaurants',
+                'pharmacies_and_drug_stores','snack_and_bakeries','specialty_food_stores','supermarkets_except_convenience_stores']
   coredf = spark.read.csv('hdfs:///data/share/bdm/core-places-nyc.csv', header = True, escape = '"')\
           .select('safegraph_place_id','naics_code')\
           .where(F.col('naics_code').isin(NAICS))\
-          .rdd.saveAsTextFile('output')
+          .rdd.saveAsTextFile(f"/{sys.argv[1]}/{fileNames[index]}"))
   #joindf = importData(spark)
   #dfs = splitData(joindf)
   #index = 0
-  #fileNames = ['big_box_grocers','convenience_stores','drinking_places','full_service_restaurants','limited_service_restaurants',
-  #              'pharmacies_and_drug_stores','snack_and_bakeries','specialty_food_stores','supermarkets_except_convenience_stores']
+
   #for x in range(len(dfs)):
   #  dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
   #      .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
