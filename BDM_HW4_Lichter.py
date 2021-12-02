@@ -76,7 +76,7 @@ def main(sc):
           .where(F.col('naics_code').isin(NAICS)) 
   joindf = coredf.join(datedf, 'safegraph_place_id')\
                .withColumn('year', F.year(F.col('date')))\
-              .withColumn('date', F.month(F.col('date')))#F.expr('make_date(2020,month(date),dayofmonth(date))'))#\
+              .withColumn('date', F.when(F.col('date')< datetime.date(2020,1,1), F.add_months(F.col('date'), 12)).otherwise(F.col('date')))#\
 #              .select('naics_code', 'year','date', 'visits')
   joindf.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #for x in range(len(dfs)):
