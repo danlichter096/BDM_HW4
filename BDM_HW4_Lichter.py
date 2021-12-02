@@ -74,10 +74,10 @@ def main(sc):
   coredf = spark.read.csv('hdfs:///data/share/bdm/core-places-nyc.csv', header = True, escape = '"')\
           .select('safegraph_place_id','naics_code')\
           .where(F.col('naics_code').isin(NAICS)) 
-  joindf = coredf.join(datedf, 'safegraph_place_id')\
-              .withColumn('year', F.year(F.col('date')))\
-              .withColumn('date', F.expr("make_date(2020,month(date),dayofmonth(date))"))\
-              .select('naics_code', 'year','date', 'visits')
+  joindf = coredf.join(datedf, 'safegraph_place_id')#\
+#              .withColumn('year', F.year(F.col('date')))\
+#              .withColumn('date', F.expr("make_date(2020,month(date),dayofmonth(date))"))\
+#              .select('naics_code', 'year','date', 'visits')
   joindf.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #for x in range(len(dfs)):
   #  dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
