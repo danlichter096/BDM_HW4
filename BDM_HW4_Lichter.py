@@ -57,23 +57,21 @@ def importData(spark):
 
 def main(sc):
   spark = SparkSession(sc)
-  weeklydf = spark.read.csv('hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/', header = True)\
-                .select('safegraph_place_id', 'date_range_start', 'visits_by_day').rdd.saveAsTextFile('output')
-  #joindf = importData(spark)
-  #dfs = splitData(joindf)
-  #index = 0
+  joindf = importData(spark)
+  dfs = splitData(joindf)
+  index = 0
 
-  #for x in range(len(dfs)):
-  #  dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
-  #      .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
-  #      .withColumn('std', F.round('std').cast('int'))\
-  #      .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
-  #      .withColumn('high', F.col('median')+F.col('std'))\
-  #      .drop('array1')\
-  #      .drop('std')\
-  #      .rdd.saveAsTextFile('output')
+  for x in range(len(dfs)):
+    dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
+        .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
+        .withColumn('std', F.round('std').cast('int'))\
+        .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
+        .withColumn('high', F.col('median')+F.col('std'))\
+        .drop('array1')\
+        .drop('std')\
+        .rdd.saveAsTextFile('output')
         #f"/{sys.argv[1]}/{fileNames[index]}")
-  #  index+=1
+    index+=1
 
 
 if __name__ == "__main__":
