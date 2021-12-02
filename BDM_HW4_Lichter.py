@@ -24,7 +24,7 @@ def expandVisits(date_range_start, visits_by_day):
     return visits
 
 def importData(spark):
-  weeklydf = spark.read.csv('hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*', header = True)\
+  weeklydf = spark.read.csv('hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/', header = True)\
                 .select('safegraph_place_id', 'date_range_start', 'visits_by_day')
   udfExpand = F.udf(expandVisits, MapType(DateType(), IntegerType()))
   datedf = weeklydf.select('safegraph_place_id',
