@@ -75,8 +75,8 @@ def main(sc):
   coredf = spark.read.csv('hdfs:///data/share/bdm/core-places-nyc.csv', header = True, escape = '"')\
           .select('safegraph_place_id','naics_code')\
           .where(F.col('naics_code').isin(NAICS)) 
-  #index+=1
-  #coredf.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  coredf.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
 #.rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}")
   #joindf = coredf.join(datedf, 'safegraph_place_id')\
   #            .withColumn('year', F.year(F.col('date')))\
