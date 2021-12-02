@@ -76,7 +76,8 @@ def main(sc):
           .select('safegraph_place_id','naics_code')\
           .where(F.col('naics_code').isin(NAICS)) 
   index+=1
-  coredf.rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}")
+  coredf.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+#.rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}")
   #joindf = coredf.join(datedf, 'safegraph_place_id')\
   #            .withColumn('year', F.year(F.col('date')))\
   #            .withColumn('date', F.expr("make_date(2020,month(date),dayofmonth(date))"))\
