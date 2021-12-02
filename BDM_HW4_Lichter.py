@@ -80,11 +80,7 @@ def main(sc):
               .select('naics_code', 'year','date', 'visits')
     
   big_box_df = joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code')
-  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
   convenience_df = joindf.where(F.col('naics_code').isin([445120])).drop('naics_code')
-  convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
   drinking_df = joindf.where(F.col('naics_code').isin([722410])).drop('naics_code')
   drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   full_service_df = joindf.where(F.col('naics_code').isin([722511])).drop('naics_code')
@@ -97,14 +93,14 @@ def main(sc):
   #              pharmacies_drug_df, snack_bakeries_df, specialty_df, supermarkets_df]
   #joindf.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #for x in range(len(dfs)):
-  #  dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
+  big_box_df = big_box_df.groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))#\
   #      .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
   #      .withColumn('std', F.round('std').cast('int'))\
   #      .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
   #      .withColumn('high', F.col('median')+F.col('std'))\
   #      .drop('array1')\
   #      .drop('std')
-     
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   # dfs[x].write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #  index+=1
 
