@@ -65,7 +65,7 @@ def main(sc):
   coredf = spark.read.csv('hdfs:///data/share/bdm/core-places-nyc.csv', header = True, escape = '"')\
           .select('safegraph_place_id','naics_code')\
           .where(F.col('naics_code').isin(NAICS))\
-          .rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}"))
+          .rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}")
   #joindf = importData(spark)
   #dfs = splitData(joindf)
   #index = 0
