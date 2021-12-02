@@ -58,21 +58,22 @@ def importData(spark):
 def main(sc):
   spark = SparkSession(sc)
   joindf = importData(spark)
-  dfs = splitData(joindf)
+  #dfs = splitData(joindf)
   index = 0
   fileNames = ['big_box_grocers','convenience_stores','drinking_places','full_service_restaurants','limited_service_restaurants',
                 'pharmacies_and_drug_stores','snack_and_bakeries','specialty_food_stores','supermarkets_except_convenience_stores']
-  for x in range(len(dfs)):
-    dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
-        .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
-        .withColumn('std', F.round('std').cast('int'))\
-        .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
-        .withColumn('high', F.col('median')+F.col('std'))\
-        .drop('array1')\
-        .drop('std')\
-        .rdd.saveAsTextFile('output')
+  joindf.rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}")
+  #for x in range(len(dfs)):
+  #  dfs[x] = dfs[x].groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
+  #      .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
+  #      .withColumn('std', F.round('std').cast('int'))\
+  #      .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
+  #      .withColumn('high', F.col('median')+F.col('std'))\
+  #      .drop('array1')\
+  #      .drop('std')\
+  #      .rdd.saveAsTextFile('output')
         #f"/{sys.argv[1]}/{fileNames[index]}")
-    index+=1
+   #index+=1
 
 
 if __name__ == "__main__":
