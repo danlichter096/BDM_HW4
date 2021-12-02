@@ -70,7 +70,8 @@ def main(sc):
         .withColumn('high', F.col('median')+F.col('std'))\
         .drop('array1')\
         .drop('std')\
-        .rdd.saveAsTextFile(f"/{sys.argv[1]}/{fileNames[index]}")
+        .rdd.saveAsTextFile('output')
+        #f"/{sys.argv[1]}/{fileNames[index]}")
     index+=1
 
 
