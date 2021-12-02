@@ -94,8 +94,8 @@ def main(sc):
   #joindf.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #for x in range(len(dfs)):
   index+=5
-  big_box_df = big_box_df.groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))#\
-  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  a_df = big_box_df.groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))#\
+  a_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #      .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
   #      .withColumn('std', F.round('std').cast('int'))\
   #      .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
