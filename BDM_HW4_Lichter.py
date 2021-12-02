@@ -70,11 +70,13 @@ def main(sc):
                  F.explode(udfExpand('date_range_start', 'visits_by_day')).alias('date', 'visits'))\
                 .filter(F.col("date") >= datetime.date(2019,1,1))
   datedf.rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}")
-  #NAICS = set(['452210', '452311', '445120', '722410', '722511', '722513', '446110', '446191','311811', '722515', 
-  #           '445210','445220','445230','445291','445292','445299','445110'])
-  #coredf = spark.read.csv('hdfs:///data/share/bdm/core-places-nyc.csv', header = True, escape = '"')\
-  #        .select('safegraph_place_id','naics_code')\
-  #        .where(F.col('naics_code').isin(NAICS)) 
+  NAICS = set(['452210', '452311', '445120', '722410', '722511', '722513', '446110', '446191','311811', '722515', 
+             '445210','445220','445230','445291','445292','445299','445110'])
+  coredf = spark.read.csv('hdfs:///data/share/bdm/core-places-nyc.csv', header = True, escape = '"')\
+          .select('safegraph_place_id','naics_code')\
+          .where(F.col('naics_code').isin(NAICS)) 
+  index+=1
+  coredf.rdd.saveAsTextFile(f"{sys.argv[1]}/{fileNames[index]}")
   #joindf = coredf.join(datedf, 'safegraph_place_id')\
   #            .withColumn('year', F.year(F.col('date')))\
   #            .withColumn('date', F.expr("make_date(2020,month(date),dayofmonth(date))"))\
