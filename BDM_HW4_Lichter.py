@@ -54,7 +54,7 @@ def main(sc):
   snack_bakeries_df = joindf.where(F.col('naics_code').isin([311811,722515])).drop('naics_code')
   specialty_df = joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299])).drop('naics_code')
   supermarkets_df = joindf.where(F.col('naics_code').isin([445110])).drop('naics_code')
-  
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #dfs = [big_box_df, convenience_df, drinking_df, full_service_df, limited_service_df, 
   #              pharmacies_drug_df, snack_bakeries_df, specialty_df, supermarkets_df]
   #for x in range(len(dfs)):
@@ -67,7 +67,7 @@ def main(sc):
   #      .drop('array1')\
   #      .drop('std')
   
-  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  
   # dfs[x].write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #  index+=1
 
