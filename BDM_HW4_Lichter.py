@@ -88,7 +88,8 @@ def main(sc):
 
 if __name__ == "__main__":
   sc = pyspark.SparkContext()
-  main(sc)
+  print(sc.version)
+  #main(sc)
 
     
                 
