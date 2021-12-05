@@ -46,13 +46,14 @@ def main(sc):
               .withColumn('date', F.when(F.col('date')< datetime.date(2020,1,1), F.add_months(F.col('date'), 12)).otherwise(F.col('date')))\
               .select('naics_code', 'year','date', 'visits')
   
-  big_box_df = joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code')\
+  joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code')\
               .groupby('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
               .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2).cast('int'))\
               .withColumn('std', F.round('std').cast('int'))\
               .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
-              .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle').drop('std')
+              .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle').drop('std')\
+              .write.option("header", True).csv(f"{sys.argv[1]}/big_box_grocers")
     
   convenience_df = joindf.where(F.col('naics_code').isin([445120])).drop('naics_code')\
               .groupby('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
@@ -118,15 +119,15 @@ def main(sc):
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle').drop('std')
       
-  big_box_df.write.option("header", True).csv(f"{sys.argv[1]}/big_box_grocers")
-  convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
-  drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
-  full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
-  limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/limited_service_restaurants")
-  pharmacies_drug_df.write.option("header",True).csv(f"{sys.argv[1]}/pharmacies_and_drug_stores")
-  snack_bakeries_df.write.option("header",True).csv(f"{sys.argv[1]}/snack_and_bakeries")
-  specialty_df.write.option("header",True).csv(f"{sys.argv[1]}/specialty_food_stores")
-  supermarkets_df.write.option("header",True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
+ # big_box_df.write.option("header", True).csv(f"{sys.argv[1]}/big_box_grocers")
+ # convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
+ # drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
+ # full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
+ # limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/limited_service_restaurants")
+ # pharmacies_drug_df.write.option("header",True).csv(f"{sys.argv[1]}/pharmacies_and_drug_stores")
+ # snack_bakeries_df.write.option("header",True).csv(f"{sys.argv[1]}/snack_and_bakeries")
+ # specialty_df.write.option("header",True).csv(f"{sys.argv[1]}/specialty_food_stores")
+ # supermarkets_df.write.option("header",True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
 
   
 #a_df=big_box_df.groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.percentile_approx('visits', 0.5).alias('median'))
