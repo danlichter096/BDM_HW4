@@ -58,7 +58,7 @@ def main(sc):
   
   a = big_box_df.groupby('year','date').agg(F.collect_list('visits').alias('array_visits'))\
                       .withColumn('median', F.ceil(F.size(F.col('array_visits'))/2).cast('int')) #F.element_at(F.col('array_visits'), F.ceil((F.size(F.col('array_visits'))/2)).cast('int')))
-  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{type(a)}")
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{a.dtypes}")
   #convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
   #full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
