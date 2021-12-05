@@ -58,8 +58,9 @@ def main(sc):
   #a_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   dfs = [big_box_df, convenience_df, drinking_df, full_service_df, limited_service_df, 
                 pharmacies_drug_df, snack_bakeries_df, specialty_df, supermarkets_df]
-  for x in range(len(dfs)):
-    dfs[x].write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[x]}")
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[x]}")
+    #for x in range(len(dfs)):
+  #  dfs[x].write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[x]}")
 #a_df = big_box_df.groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array1'))\
   #      .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
   #      .withColumn('std', F.round('std').cast('int'))\
