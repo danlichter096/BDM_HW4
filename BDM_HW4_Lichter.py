@@ -57,8 +57,7 @@ def main(sc):
   supermarkets_df = joindf.where(F.col('naics_code').isin([445110])).drop('naics_code')
   
   a = big_box_df.groupby('year','date').agg(collect_list('visits'))
-  a.write.csv('test')
-  #a.write.option("header",True).csv(f"{sys.argv[1]}/{sc.version}")
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{a}")
   #convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
   #full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
