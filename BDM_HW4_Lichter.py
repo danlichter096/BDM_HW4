@@ -60,7 +60,7 @@ def main(sc):
                       .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2)).drop('array_visits')
                       #.withColumn('median', F.element_at(F.col('array_visits'), F.col('middle')))\
                        # .drop('array_visits') #F.element_at(F.col('array_visits'), F.ceil((F.size(F.col('array_visits'))/2)).cast('int')))
-  a.write.option("header",True).csv(f"{sys.argv[1]}/{a.dtypes}")
+  a.write.option("header",True).csv(f"{sys.argv[1]}/a")
   #convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
   #full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
