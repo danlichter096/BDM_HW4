@@ -45,37 +45,19 @@ def main(sc):
               .withColumn('date', F.when(F.col('date')< datetime.date(2020,1,1), F.add_months(F.col('date'), 12)).otherwise(F.col('date')))\
               .select('naics_code', 'year','date', 'visits')
   
-  #big_box_df = 
-  joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  #convenience_df = 
-  joindf.where(F.col('naics_code').isin([445120])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  #drinking_df = 
-  joindf.where(F.col('naics_code').isin([722410])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  #full_service_df = 
-  joindf.where(F.col('naics_code').isin([722511])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  #limited_service_df = 
-  joindf.where(F.col('naics_code').isin([722513])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  #pharmacies_drug_df = 
-  joindf.where(F.col('naics_code').isin([446110,446191])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  #snack_bakeries_df = 
-  joindf.where(F.col('naics_code').isin([311811,722515])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  #specialty_df = 
-  joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1  
-#supermarkets_df = 
-  joindf.where(F.col('naics_code').isin([445110])).drop('naics_code').write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  
+  big_box_df = joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code')
+  convenience_df = joindf.where(F.col('naics_code').isin([445120])).drop('naics_code')
+  drinking_df = joindf.where(F.col('naics_code').isin([722410])).drop('naics_code')
+  full_service_df = joindf.where(F.col('naics_code').isin([722511])).drop('naics_code')
+  limited_service_df = joindf.where(F.col('naics_code').isin([722513])).drop('naics_code')
+  pharmacies_drug_df = joindf.where(F.col('naics_code').isin([446110,446191])).drop('naics_code')
+  snack_bakeries_df = joindf.where(F.col('naics_code').isin([311811,722515])).drop('naics_code')
+  specialty_df = joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299])).drop('naics_code')
+  supermarkets_df = joindf.where(F.col('naics_code').isin([445110])).drop('naics_code')
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
 #a_df=big_box_df.groupBy('year','date').agg(F.stddev_pop('visits').alias('std'), F.percentile_approx('visits', 0.5).alias('median'))
   #a_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  #dfs = [big_box_df, convenience_df, drinking_df, full_service_df, limited_service_df, 
-                pharmacies_drug_df, snack_bakeries_df, specialty_df, supermarkets_df]
+  #dfs = [big_box_df, convenience_df, drinking_df, full_service_df, limited_service_df, pharmacies_drug_df, snack_bakeries_df, specialty_df, supermarkets_df]
   #big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
     #for x in range(len(dfs)):
   #  dfs[x].write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[x]}")
