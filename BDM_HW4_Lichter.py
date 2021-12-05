@@ -60,8 +60,8 @@ def main(sc):
               .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2).cast('int'))\
               .withColumn('std', F.round('std').cast('int'))\
               .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)])\
-              .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0)).drop('array_visits').drop('middle')
-  #      .withColumn('high', F.col('median')+F.col('std'))\
+              .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
+              .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle')
                        # .drop('array_visits') #F.element_at(F.col('array_visits'), F.ceil((F.size(F.col('array_visits'))/2)).cast('int')))
   a.write.option("header",True).csv(f"{sys.argv[1]}/a")
   #big_box_df.write.option("header", True).csv(f"{sys.argv[1]}/{a.dtypes}")
