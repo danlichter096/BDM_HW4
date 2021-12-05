@@ -55,8 +55,8 @@ def main(sc):
   specialty_df = joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299])).drop('naics_code')
   supermarkets_df = joindf.where(F.col('naics_code').isin([445110])).drop('naics_code')
   
-  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/big_box_grocers")
-  convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{sc.version}")
+  #convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
   #full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
   #limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/limited_service_restaurants")
@@ -88,8 +88,8 @@ def main(sc):
 
 if __name__ == "__main__":
   sc = pyspark.SparkContext()
-  print(sc.version)
-  #main(sc)
+  #print(sc.version)
+  main(sc)
 
     
                 
