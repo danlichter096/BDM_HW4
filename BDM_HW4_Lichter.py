@@ -54,23 +54,15 @@ def main(sc):
   snack_bakeries_df = joindf.where(F.col('naics_code').isin([311811,722515])).drop('naics_code')
   specialty_df = joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299])).drop('naics_code')
   supermarkets_df = joindf.where(F.col('naics_code').isin([445110])).drop('naics_code')
-  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  pharmacies_drug_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  snack_bakeries_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  specialty_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
-  index+=1
-  supermarkets_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/big_box_grocers")
+  convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
+  drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
+  full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
+  limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/limited_service_restaurants")
+  pharmacies_drug_df.write.option("header",True).csv(f"{sys.argv[1]}/pharmacies_and_drug_stores")
+  snack_bakeries_df.write.option("header",True).csv(f"{sys.argv[1]}/snack_and_bakeries")
+  specialty_df.write.option("header",True).csv(f"{sys.argv[1]}/specialty_food_stores")
+  supermarkets_df.write.option("header",True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   
