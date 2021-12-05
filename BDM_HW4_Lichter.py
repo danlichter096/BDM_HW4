@@ -46,7 +46,14 @@ def main(sc):
               .withColumn('date', F.when(F.col('date')< datetime.date(2020,1,1), F.add_months(F.col('date'), 12)).otherwise(F.col('date')))\
               .select('naics_code', 'year','date', 'visits')
   
-  big_box_df = joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code')
+  big_box_df = joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code')\
+              .groupby('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
+              .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2).cast('int'))\
+              .withColumn('std', F.round('std').cast('int'))\
+              .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)])\
+              .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
+              .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle').drop('std')
+    
   convenience_df = joindf.where(F.col('naics_code').isin([445120])).drop('naics_code')
   drinking_df = joindf.where(F.col('naics_code').isin([722410])).drop('naics_code')
   full_service_df = joindf.where(F.col('naics_code').isin([722511])).drop('naics_code')
@@ -56,14 +63,8 @@ def main(sc):
   specialty_df = joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299])).drop('naics_code')
   supermarkets_df = joindf.where(F.col('naics_code').isin([445110])).drop('naics_code')
   
-  a = big_box_df.groupby('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2).cast('int'))\
-              .withColumn('std', F.round('std').cast('int'))\
-              .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)])\
-              .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
-              .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle')
                        # .drop('array_visits') #F.element_at(F.col('array_visits'), F.ceil((F.size(F.col('array_visits'))/2)).cast('int')))
-  a.write.option("header",True).csv(f"{sys.argv[1]}/a")
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/a")
   #big_box_df.write.option("header", True).csv(f"{sys.argv[1]}/{a.dtypes}")
   #convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
