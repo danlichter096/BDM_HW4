@@ -69,6 +69,7 @@ def main(sc):
               .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle').drop('std')
+    
   full_service_df = joindf.where(F.col('naics_code').isin([722511])).drop('naics_code')
   limited_service_df = joindf.where(F.col('naics_code').isin([722513])).drop('naics_code')
   pharmacies_drug_df = joindf.where(F.col('naics_code').isin([446110,446191])).drop('naics_code')
@@ -78,7 +79,7 @@ def main(sc):
   
   big_box_df.write.option("header", True).csv(f"{sys.argv[1]}/big_box_grocers")
   convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
-  #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
+  drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
   #full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
   #limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/limited_service_restaurants")
   #pharmacies_drug_df.write.option("header",True).csv(f"{sys.argv[1]}/pharmacies_and_drug_stores")
