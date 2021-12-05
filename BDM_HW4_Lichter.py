@@ -56,8 +56,9 @@ def main(sc):
   specialty_df = joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299])).drop('naics_code')
   supermarkets_df = joindf.where(F.col('naics_code').isin([445110])).drop('naics_code')
   
-  a = big_box_df.groupby('year','date').agg(collect_list('visits').alias('array_visits'))
-  a.write.option("header",True).csv(f"{sys.argv[1]}/{big_box_df.schema}")
+  a = big_box_df.groupby('year','date').agg(collect_list('visits').alias('array_visits'))\
+                      .withColumn('median', F.element_at(F.col('array1'), F.ceil((F.size(F.col('array1'))/2)).cast('int')))\
+  big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{a.dtypes}")
   #convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/convenience_stores")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/drinking_places")
   #full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/full_service_restaurants")
