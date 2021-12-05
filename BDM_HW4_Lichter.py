@@ -58,7 +58,7 @@ def main(sc):
   
   a = big_box_df.groupby('year','date').agg(F.sort_array(F.collect_list('visits')).alias('array_visits'))\
                       .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2).cast('int') )\
-                      .withColumn('median', F.element_at(F.col('array_visits'), 1)).drop('array_visits') #F.ceil((F.size(F.col('array_visits'))/2)).cast('int'))).drop('array_visits')
+                      .withColumn('median', F.element_at(F.col('array_visits'), F.col('middle'))).drop('array_visits') #F.ceil((F.size(F.col('array_visits'))/2)).cast('int'))).drop('array_visits')
                       #.withColumn('median', F.element_at(F.col('array_visits'), F.col('middle')))\
                        # .drop('array_visits') #F.element_at(F.col('array_visits'), F.ceil((F.size(F.col('array_visits'))/2)).cast('int')))
   a.write.option("header",True).csv(f"{sys.argv[1]}/a")
