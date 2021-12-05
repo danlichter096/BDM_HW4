@@ -57,6 +57,20 @@ def main(sc):
   big_box_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   index+=1
   convenience_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  full_service_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  pharmacies_drug_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  snack_bakeries_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  specialty_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
+  index+=1
+  supermarkets_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #drinking_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   #limited_service_df.write.option("header",True).csv(f"{sys.argv[1]}/{fileNames[index]}")
   
