@@ -43,8 +43,7 @@ def main(sc):
   
   joindf.where(F.col('naics_code').isin([452210,452311])).drop('naics_code')\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2).cast('int'))\
-              .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('middle').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/big_box_grocers")
