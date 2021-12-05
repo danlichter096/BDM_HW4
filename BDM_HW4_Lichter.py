@@ -59,7 +59,7 @@ def main(sc):
   a = big_box_df.groupby('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
               .withColumn('middle', F.ceil(F.size(F.col('array_visits'))/2).cast('int'))\
               .withColumn('std', F.round('std').cast('int'))\
-              .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)]).drop('array_visits')
+              .withColumn('median', F.col('array_visits')[F.col('middle')-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0)).drop('array_visits').drop('middle')
   #      .withColumn('high', F.col('median')+F.col('std'))\
                        # .drop('array_visits') #F.element_at(F.col('array_visits'), F.ceil((F.size(F.col('array_visits'))/2)).cast('int')))
