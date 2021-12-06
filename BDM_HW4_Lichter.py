@@ -100,14 +100,14 @@ def main(sc):
 
   
   big_box_df.write.option("header", True).csv(f"{sys.argv[1]}/big_box_grocers")
-  convenience_df.write.option("header", True).csv(f"{sys.argv[1]}/convenience_stores")
-  drinking_df.write.option("header", True).csv(f"{sys.argv[1]}/drinking_places")
-  full_service_df.write.option("header", True).csv(f"{sys.argv[1]}/full_service_restaurants")
-  limited_service_df.write.option("header", True).csv(f"{sys.argv[1]}/limited_service_restaurants")
-  pharmacies_df.write.option("header", True).csv(f"{sys.argv[1]}/pharmacies_and_drug_stores")
-  snack_df.write.option("header", True).csv(f"{sys.argv[1]}/snack_and_bakeries")
-  specialty_df.write.option("header", True).csv(f"{sys.argv[1]}/specialty_food_stores")
-  supermarket_df.write.option("header", True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
+  #convenience_df.write.option("header", True).csv(f"{sys.argv[1]}/convenience_stores")
+  #drinking_df.write.option("header", True).csv(f"{sys.argv[1]}/drinking_places")
+  #full_service_df.write.option("header", True).csv(f"{sys.argv[1]}/full_service_restaurants")
+  #limited_service_df.write.option("header", True).csv(f"{sys.argv[1]}/limited_service_restaurants")
+  #pharmacies_df.write.option("header", True).csv(f"{sys.argv[1]}/pharmacies_and_drug_stores")
+  #snack_df.write.option("header", True).csv(f"{sys.argv[1]}/snack_and_bakeries")
+  #specialty_df.write.option("header", True).csv(f"{sys.argv[1]}/specialty_food_stores")
+  #supermarket_df.write.option("header", True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
  
 
 if __name__ == "__main__":
