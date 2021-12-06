@@ -38,8 +38,8 @@ def main(sc):
           .where(F.col('naics_code').isin(NAICS)) 
   joindf = coredf.join(datedf, 'safegraph_place_id')\
                .withColumn('year', F.year(F.col('date')))\
-              .withColumn('date', F.when(F.col('date')< datetime.date(2020,1,1), F.add_months(F.col('date'), 12)).otherwise(F.col('date')))\
-              .select('naics_code', 'year','date', 'visits')
+              .withColumn('date', F.when(F.col('date')< datetime.date(2020,1,1), F.add_months(F.col('date'), 12)).otherwise(F.col('date')))
+            #  .select('naics_code', 'year','date', 'visits')
   
   joindf.where(F.col('naics_code').isin([452210,452311]))\
               .groupby('year','date').agg(F.stddev_pop('visits').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
