@@ -54,56 +54,55 @@ def main(sc):
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/convenience_stores")
-  '''
+
   joindf.where(F.col('naics_code').isin([722410]))\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2)-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/drinking_places")
   
   joindf.where(F.col('naics_code').isin([722511]))\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2)-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/full_service_restaurants")
   
   joindf.where(F.col('naics_code').isin([722513]))\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2)-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/limited_service_restaurants")
   
   joindf.where(F.col('naics_code').isin([446110,446191]))\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2)-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/pharmacies_and_drug_stores")
   
   joindf.where(F.col('naics_code').isin([311811,722515]))\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2)-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/snack_and_bakeries")
   
   joindf.where(F.col('naics_code').isin([445210,445220,445230,445291,445292,445299]))\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2)-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/specialty_food_stores")
   
   joindf.where(F.col('naics_code').isin([445110]))\
               .groupby('year','date').agg(F.stddev_pop('visits').cast('int').alias('std'), F.sort_array(F.collect_list('visits')).alias('array_visits'))\
-              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2).cast('int')-F.lit(1)])\
+              .withColumn('median', F.col('array_visits')[F.ceil(F.size(F.col('array_visits'))/2)-F.lit(1)])\
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')\
               .write.option("header", True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
-  '''        
  
 
 if __name__ == "__main__":
