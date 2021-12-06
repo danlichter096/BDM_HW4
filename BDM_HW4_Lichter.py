@@ -103,6 +103,8 @@ def main(sc):
               .withColumn('low', F.when(F.col('median')-F.col('std')>0,F.col('median')-F.col('std')).otherwise(0))\
               .withColumn('high', F.col('median')+F.col('std')).drop('array_visits').drop('std')#\
              # .write.option("header", True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
+  
+  big_box_df.write.csv(f"{sys.argv[1]}/big_box_grocers")
  
 
 if __name__ == "__main__":
