@@ -105,6 +105,8 @@ def main(sc):
              # .write.option("header", True).csv(f"{sys.argv[1]}/supermarkets_except_convenience_stores")
   
   big_box_df.write.csv(f"{sys.argv[1]}/big_box_grocers")
+  convenience_df.write.csv(f"{sys.argv[1]}/convenience_stores")
+  drinking_df.write.csv(f"{sys.argv[1]}/drinking_places")
  
 
 if __name__ == "__main__":
